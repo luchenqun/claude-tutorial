@@ -157,7 +157,8 @@
     const SNAKE_COLOR = '#5B7CE8';
     const SNAKE_DARK  = '#4566CC';
 
-    let snake, dir, nextDir, food, score, highScore, level, speed, gameLoop, paused, running;
+    let snake, dir, nextDir, foods, score, highScore, level, speed, gameLoop, paused, running;
+    const MIN_FOOD = 3;
     let dizzy = false;
     let dizzyStartTime = 0;
     const DIZZY_DURATION = 1400;
@@ -178,7 +179,8 @@
       running = true;
       scoreEl.textContent = 0;
       levelEl.textContent = 1;
-      spawnFood();
+      foods = [];
+      for (let i = 0; i < MIN_FOOD; i++) spawnFood();
     }
 
     function spawnFood() {
@@ -188,8 +190,11 @@
           x: Math.floor(Math.random() * COLS),
           y: Math.floor(Math.random() * ROWS),
         };
-      } while (snake.some(s => s.x === pos.x && s.y === pos.y));
-      food = pos;
+      } while (
+        snake.some(s => s.x === pos.x && s.y === pos.y) ||
+        foods.some(f => f.x === pos.x && f.y === pos.y)
+      );
+      foods.push(pos);
     }
 
     function update() {
@@ -203,14 +208,16 @@
 
       snake.unshift(head);
 
-      if (head.x === food.x && head.y === food.y) {
+      const eatenIndex = foods.findIndex(f => f.x === head.x && f.y === head.y);
+      if (eatenIndex !== -1) {
+        foods.splice(eatenIndex, 1);
         score += level * 10;
         scoreEl.textContent = score;
         if (score > highScore) { highScore = score; highScoreEl.textContent = highScore; }
         level = Math.floor(score / 50) + 1;
         speed = Math.max(60, 150 - (level - 1) * 10);
         levelEl.textContent = level;
-        spawnFood();
+        while (foods.length < MIN_FOOD) spawnFood();
         clearInterval(gameLoop);
         gameLoop = setInterval(tick, speed);
       } else {
@@ -234,7 +241,8 @@
 
     // 绘制苹果（食物）
     function drawFood() {
-      const cx = food.x * GRID + GRID / 2;
+      for (const food of foods) {
+        const cx = food.x * GRID + GRID / 2;
       const cy = food.y * GRID + GRID / 2;
       const r  = GRID / 2 - 2;
 
@@ -274,6 +282,7 @@
       ctx.moveTo(cx, cy - r);
       ctx.quadraticCurveTo(cx + 3, cy - r - 5, cx + 2, cy - r - 8);
       ctx.stroke();
+      }
     }
 
     // 绘制平滑蛇身（粗描边路径法）
