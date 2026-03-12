@@ -158,6 +158,9 @@
     const SNAKE_DARK  = '#4566CC';
 
     let snake, dir, nextDir, food, score, highScore, level, speed, gameLoop, paused, running;
+    let dizzy = false;
+    let dizzyStartTime = 0;
+    const DIZZY_DURATION = 1400;
     highScore = 0;
 
     function initGame() {
@@ -195,8 +198,8 @@
       dir = nextDir;
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) return gameOver();
-      if (snake.some(s => s.x === head.x && s.y === head.y)) return gameOver();
+      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) return startDizzy();
+      if (snake.some(s => s.x === head.x && s.y === head.y)) return startDizzy();
 
       snake.unshift(head);
 
@@ -363,6 +366,97 @@
       drawFood();
       drawSnakeBody();
       drawSnakeHead();
+    }
+
+    // 触发晕头动画
+    function startDizzy() {
+      running = false;
+      dizzy = true;
+      clearInterval(gameLoop);
+      dizzyStartTime = performance.now();
+      requestAnimationFrame(dizzyLoop);
+    }
+
+    // 晕头动画帧循环
+    function dizzyLoop(timestamp) {
+      const elapsed = timestamp - dizzyStartTime;
+      const progress = Math.min(elapsed / DIZZY_DURATION, 1);
+      drawBackground();
+      drawFood();
+      drawSnakeBody();
+      drawDizzyHead(elapsed, progress);
+      if (progress < 1) {
+        requestAnimationFrame(dizzyLoop);
+      } else {
+        dizzy = false;
+        gameOver();
+      }
+    }
+
+    // 绘制晕头状态（X眼 + 摇晃 + 金星）
+    function drawDizzyHead(elapsed, progress) {
+      const head = snake[0];
+      const wobble = Math.sin(elapsed * 0.035) * 4 * (1 - progress * 0.4);
+      const cx = head.x * GRID + GRID / 2 + wobble;
+      const cy = head.y * GRID + GRID / 2;
+      const r = GRID / 2 - 1;
+
+      // 头部
+      ctx.fillStyle = SNAKE_COLOR;
+      ctx.shadowColor = 'rgba(0,0,0,0.2)';
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetY = 3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r + 1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // 眼睛位置（同正常头）
+      const ed = 4, ef = 3;
+      let ex1, ey1, ex2, ey2;
+      if (dir.x === 1)   { ex1=cx+ef; ey1=cy-ed; ex2=cx+ef; ey2=cy+ed; }
+      else if (dir.x===-1){ ex1=cx-ef; ey1=cy-ed; ex2=cx-ef; ey2=cy+ed; }
+      else if (dir.y===-1){ ex1=cx-ed; ey1=cy-ef; ex2=cx+ed; ey2=cy-ef; }
+      else                { ex1=cx-ed; ey1=cy+ef; ex2=cx+ed; ey2=cy+ef; }
+
+      // X 形眼睛
+      ctx.strokeStyle = '#cc2200';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      const xs = 3;
+      [[ex1, ey1], [ex2, ey2]].forEach(([ex, ey]) => {
+        ctx.beginPath(); ctx.moveTo(ex-xs, ey-xs); ctx.lineTo(ex+xs, ey+xs); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ex+xs, ey-xs); ctx.lineTo(ex-xs, ey+xs); ctx.stroke();
+      });
+
+      // 绕头旋转的金星
+      const orbitR = r + 10;
+      const angleOffset = elapsed * 0.005;
+      for (let i = 0; i < 3; i++) {
+        const angle = angleOffset + (i / 3) * Math.PI * 2;
+        const sx = cx + Math.cos(angle) * orbitR;
+        const sy = cy + Math.sin(angle) * orbitR;
+        drawStar(sx, sy, 5, 2.5);
+      }
+    }
+
+    // 绘制五角星
+    function drawStar(cx, cy, outerR, innerR) {
+      ctx.fillStyle = '#FFD700';
+      ctx.strokeStyle = '#FFA500';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const angle = (i * Math.PI) / 5 - Math.PI / 2;
+        const r = i % 2 === 0 ? outerR : innerR;
+        const x = cx + Math.cos(angle) * r;
+        const y = cy + Math.sin(angle) * r;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
     }
 
     function gameOver() {
