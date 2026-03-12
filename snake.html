@@ -481,10 +481,10 @@
 
     document.addEventListener('keydown', e => {
       switch (e.key) {
-        case 'ArrowUp':    case 'w': case 'W': if (dir.y !== 1)  nextDir={x:0,y:-1}; e.preventDefault(); break;
-        case 'ArrowDown':  case 's': case 'S': if (dir.y !== -1) nextDir={x:0,y:1};  e.preventDefault(); break;
-        case 'ArrowLeft':  case 'a': case 'A': if (dir.x !== 1)  nextDir={x:-1,y:0}; e.preventDefault(); break;
-        case 'ArrowRight': case 'd': case 'D': if (dir.x !== -1) nextDir={x:1,y:0};  e.preventDefault(); break;
+        case 'ArrowUp':    case 'w': case 'W': e.preventDefault(); if (!running && !paused) { startGame(); break; } if (dir.y !== 1)  nextDir={x:0,y:-1}; break;
+        case 'ArrowDown':  case 's': case 'S': e.preventDefault(); if (!running && !paused) { startGame(); break; } if (dir.y !== -1) nextDir={x:0,y:1};  break;
+        case 'ArrowLeft':  case 'a': case 'A': e.preventDefault(); if (!running && !paused) { startGame(); break; } if (dir.x !== 1)  nextDir={x:-1,y:0}; break;
+        case 'ArrowRight': case 'd': case 'D': e.preventDefault(); if (!running && !paused) { startGame(); break; } if (dir.x !== -1) nextDir={x:1,y:0};  break;
         case 'p': case 'P':
           if (!running) return;
           paused = !paused;
