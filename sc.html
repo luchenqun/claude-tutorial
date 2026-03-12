@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KTECH - Stablecoin Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #00aea9;
+      --blue: #004bcb;
+      --bg: #000510;
+      --text-gradient: linear-gradient(90deg, #00aea9 51.5%, #ffffff 75.4%);
+      --btn-gradient: linear-gradient(90deg, #004bcb 0%, #00aea9 66.75%);
+      --avatar-gradient: linear-gradient(93.78deg, #004bcb 0.92%, #00aea9 103.8%);
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-width: 1440px;
+      overflow-x: hidden;
+    }
+
+    .page-wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 0;
+    }
+
+    /* Gradient text */
+    .grad-text {
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Button */
+    .btn-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--btn-gradient);
+      border-radius: 100px;
+      padding: 13px 24px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 5px 30px 0 #004bcb;
+      cursor: pointer;
+      border: none;
+      letter-spacing: -0.6px;
+    }
+
+    .btn-demo svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* Arrow icon */
+    .arrow-icon {
+      width: 20px; height: 20px;
+      background: url('https://www.figma.com/api/mcp/asset/3ed69ce2-effc-44ea-8b41-2eb6823a2038') center/contain no-repeat;
+      flex-shrink: 0;
+    }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: relative;
+      z-index: 100;
+      padding: 32px 120px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo img { height: 30px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.6px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-links a.active { color: var(--teal); }
+
+    .nav-dropdown-icon {
+      width: 26px; height: 26px;
+      background: url('https://www.figma.com/api/mcp/asset/7b76e2d8-a309-455e-8f2c-4d3c70b950ca') center/contain no-repeat;
+    }
+
+    .nav-lang {
+      position: relative;
+      width: 117px;
+      height: 38px;
+      border: 0.5px solid #fff;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+    }
+
+    .lang-active {
+      position: absolute;
+      left: 0;
+      background: #019fad;
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 16px;
+      font-weight: 300;
+      color: #fff;
+      letter-spacing: -0.6px;
+    }
+
+    .lang-inactive {
+      position: absolute;
+      right: 0;
+      padding: 8px 20px;
+      font-size: 16px;
+      font-weight: 300;
+      color: #fff;
+      letter-spacing: -0.6px;
+    }
+
+    /* ===================== HERO ===================== */
+    .section-hero {
+      position: relative;
+      min-height: 680px;
+      padding: 0 120px;
+      overflow: hidden;
+    }
+
+    .hero-glow-top {
+      position: absolute;
+      top: -165px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1078px;
+      height: 165px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .hero-glow-top img {
+      position: absolute;
+      top: -500%;
+      left: -46.38%;
+      width: 192.76%;
+      height: 606.06%;
+      max-width: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding-top: 94px;
+      max-width: 638px;
+    }
+
+    .hero-title {
+      font-size: 66px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.6px;
+      text-transform: capitalize;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, #00aea9 51.5%, #ffffff 75.4%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 4px 20px #089a96);
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.4;
+      color: #fff;
+      margin-bottom: 46px;
+    }
+
+    .hero-image {
+      position: absolute;
+      right: -80px;
+      top: 20px;
+      width: 900px;
+      height: 700px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ===================== SECTION 2: SOLUTION HIGHLIGHTS ===================== */
+    .section-highlights {
+      padding: 80px 120px;
+      display: flex;
+      gap: 78px;
+      align-items: flex-start;
+    }
+
+    .highlights-left {
+      flex-shrink: 0;
+      width: 522px;
+    }
+
+    .section-label {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+    }
+
+    .section-desc {
+      font-size: 20px;
+      font-weight: 400;
+      color: #fff;
+      text-transform: capitalize;
+      margin-bottom: 24px;
+    }
+
+    .highlights-visual {
+      position: relative;
+      width: 522px;
+      height: 522px;
+      border-radius: 20px;
+      border: 2px solid var(--blue);
+      background: rgba(0, 174, 169, 0.05);
+      overflow: hidden;
+    }
+
+    .highlights-visual img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .highlights-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 22px;
+      padding: 10px;
+      align-items: flex-start;
+      width: 600px;
+    }
+
+    .feature-num {
+      width: 60px;
+      height: 60px;
+      border-radius: 50px;
+      background: var(--avatar-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .feature-text { flex: 1; }
+
+    .feature-title {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .feature-desc {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #fff;
+    }
+
+    /* ===================== SECTION 3: ARCHITECTURE ===================== */
+    .section-architecture {
+      padding: 80px 120px;
+    }
+
+    .section-title {
+      font-size: 58px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.6px;
+      text-align: center;
+      text-transform: capitalize;
+      text-shadow: 0 5px 30px #089a96;
+      margin-bottom: 60px;
+    }
+
+    .arch-container {
+      background: rgba(0, 174, 169, 0.1);
+      border-radius: 20px;
+      padding: 30px 30px 30px 148px;
+      position: relative;
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 0;
+    }
+
+    .arch-row:last-child { margin-bottom: 0; }
+
+    .arch-layer-label {
+      position: absolute;
+      left: 30px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      text-transform: capitalize;
+      line-height: 20px;
+      width: 110px;
+    }
+
+    .arch-cards-box {
+      border: 2px solid var(--blue);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .arch-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 20px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 500;
+      color: #060f20;
+      text-align: center;
+      text-transform: capitalize;
+      line-height: 20px;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    /* Arch rows with label positioning */
+    .arch-row-wrap {
+      position: relative;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .arch-row-wrap:last-child { margin-bottom: 0; }
+
+    .arch-row-label {
+      width: 108px;
+      flex-shrink: 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      text-transform: capitalize;
+      line-height: 20px;
+    }
+
+    .arch-row-cards {
+      flex: 1;
+      border: 2px solid var(--blue);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ===================== LIFECYCLE ===================== */
+    .section-lifecycle {
+      padding: 80px 120px;
+    }
+
+    .lifecycle-subtitle {
+      font-size: 32px;
+      font-weight: 300;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 5px 30px #089a96;
+      margin-top: 10px;
+      margin-bottom: 60px;
+    }
+
+    .lifecycle-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      position: relative;
+    }
+
+    .lifecycle-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .lifecycle-icon {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+    }
+
+    .lifecycle-icon img { width: 100%; height: 100%; object-fit: contain; }
+
+    .lifecycle-phase {
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: center;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lifecycle-desc {
+      font-size: 20px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    /* connector arrow */
+    .lifecycle-arrows {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 100px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    /* ===================== USE CASES ===================== */
+    .section-usecases {
+      padding: 80px 120px;
+    }
+
+    .usecases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .usecase-card {
+      background: rgba(0, 174, 169, 0.05);
+      border: 2px solid var(--blue);
+      border-radius: 20px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      min-height: 270px;
+      justify-content: center;
+    }
+
+    .usecase-icon {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+    }
+
+    .usecase-icon img { width: 100%; height: 100%; object-fit: contain; }
+
+    .usecase-title {
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: center;
+      text-transform: capitalize;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .usecase-desc {
+      font-size: 24px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    /* ===================== COMPLIANCE & SECURITY ===================== */
+    .section-compliance {
+      padding: 80px 120px;
+    }
+
+    .compliance-item {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      margin-bottom: 60px;
+    }
+
+    .compliance-item:last-child { margin-bottom: 0; }
+
+    .compliance-item.reverse { flex-direction: row-reverse; }
+
+    .compliance-image {
+      width: 500px;
+      height: 320px;
+      border: 1px solid var(--blue);
+      border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .compliance-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .compliance-text { flex: 1; }
+
+    .compliance-title {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.3;
+      text-transform: capitalize;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .compliance-desc {
+      font-size: 26px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    /* ===================== WHY KTECH ===================== */
+    .section-why {
+      padding: 80px 0;
+      position: relative;
+      background: var(--bg);
+    }
+
+    .why-glow {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .why-glow-blob1 {
+      position: absolute;
+      width: 390px;
+      height: 390px;
+      background: #835aff;
+      border-radius: 195px;
+      filter: blur(100px);
+      left: 221px;
+      top: 36px;
+      opacity: 0.6;
+    }
+
+    .why-glow-blob2 {
+      position: absolute;
+      width: 590px;
+      height: 590px;
+      background: #004bcb;
+      border-radius: 295px;
+      filter: blur(100px);
+      left: -175px;
+      top: -215px;
+      opacity: 0.5;
+    }
+
+    .why-glow-blob3 {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: #00aea9;
+      border-radius: 400px;
+      filter: blur(100px);
+      left: 200px;
+      top: -100px;
+      opacity: 0.2;
+    }
+
+    .why-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .why-title {
+      font-size: 58px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.6px;
+      text-transform: capitalize;
+      text-shadow: 0 5px 30px #004bcb;
+      margin-bottom: 60px;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 140px;
+    }
+
+    .why-item-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: capitalize;
+      line-height: 28px;
+      margin-bottom: 14px;
+    }
+
+    .why-item-desc {
+      font-size: 18px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 24px;
+    }
+
+    /* ===================== CTA BANNER ===================== */
+    .section-cta {
+      padding: 80px 120px;
+    }
+
+    .cta-card {
+      background: #000;
+      border: 2px solid var(--blue);
+      border-radius: 26px;
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow-left {
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: 50%;
+      background: conic-gradient(from 90deg at 50% 50%, rgba(49,107,255,0.6) 0%, rgba(3,40,134,0.4) 20%, rgba(7,11,22,0) 40%, rgba(7,11,22,0) 80%, rgba(49,107,255,0.6) 100%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .cta-glow-right {
+      position: absolute;
+      top: 0; bottom: 0; right: 0;
+      width: 50%;
+      background: conic-gradient(from 270deg at 50% 50%, rgba(49,107,255,0.6) 0%, rgba(3,40,134,0.4) 20%, rgba(7,11,22,0) 40%, rgba(7,11,22,0) 80%, rgba(49,107,255,0.6) 100%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-transform: capitalize;
+      color: #fff;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-card .btn-demo {
+      position: relative;
+      z-index: 1;
+      font-size: 24px;
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      padding: 40px 120px 40px;
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(217, 217, 217, 0.2);
+      margin-bottom: 32px;
+    }
+
+    .footer-notice {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .notice-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .notice-icon img { width: 100%; height: 100%; }
+
+    .notice-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .notice-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 20px;
+    }
+
+    /* Section title with teal glow */
+    .section-title-teal {
+      font-size: 58px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.6px;
+      text-align: center;
+      text-transform: capitalize;
+      text-shadow: 0 4px 20px rgba(8,154,150,0.8);
+      color: #fff;
+      margin-bottom: 60px;
+    }
+
+    /* Connector line between lifecycle phases */
+    .lifecycle-connector {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+
+    .lifecycle-connector-line {
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+      flex: 1;
+    }
+
+    .lifecycle-arrow {
+      width: 0; height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 10px solid var(--blue);
+    }
+
+    /* light separator glow */
+    .light-separator {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,174,169,0.3), transparent);
+      margin: 0 120px;
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav>
+    <div class="nav-logo">
+      <img src="https://www.figma.com/api/mcp/asset/cb7a2ac7-1a53-4e48-94bf-273099b1a678" alt="KTECH" />
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active">About Us</a>
+      <a href="#">Our Services <span class="nav-dropdown-icon"></span></a>
+      <a href="#">Insights <span class="nav-dropdown-icon"></span></a>
+      <a href="#">Contacts</a>
+    </div>
+    <div class="nav-lang">
+      <span class="lang-active">EN</span>
+      <span class="lang-inactive">中</span>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="section-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Turnkey, Regulator-Ready Stablecoin Platform</h1>
+      <p class="hero-subtitle">From issuance, operation, redemption &amp; burn to decommission</p>
+      <button class="btn-demo">
+        Request a demo
+        <span class="arrow-icon"></span>
+      </button>
+    </div>
+    <div class="hero-image">
+      <img src="https://www.figma.com/api/mcp/asset/a1d0c276-c629-4a72-82ce-e9bfd182c8b8" alt="Platform visual" />
+    </div>
+  </section>
+
+  <div class="light-separator" style="margin-top:80px;"></div>
+
+  <!-- ===== SOLUTION HIGHLIGHTS ===== -->
+  <section class="section-highlights">
+    <div class="highlights-left">
+      <div class="section-label">Solution Highlights</div>
+      <p class="section-desc">Meticulously engineered for enterprise adoption, our stablecoin platform delivers:</p>
+      <div class="highlights-visual">
+        <img src="https://www.figma.com/api/mcp/asset/bbf144aa-8b98-42bc-9c15-147813147c77" alt="Solution visual" />
+      </div>
+    </div>
+    <div class="highlights-right">
+      <div class="feature-item">
+        <div class="feature-num">1</div>
+        <div class="feature-text">
+          <div class="feature-title">Regulatory Compliance Foundation</div>
+          <p class="feature-desc">Built-in KYC/AML, governance modules, and real-time reporting aligned with global frameworks (e.g., MiCA, FATF).</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">2</div>
+        <div class="feature-text">
+          <div class="feature-title">Banking-Grade Security</div>
+          <p class="feature-desc">Third-party audited code, FIPS 140-2 L3 hardware security modules (HSMs), and dual-key privacy architecture.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">3</div>
+        <div class="feature-text">
+          <div class="feature-title">End-to-End Lifecycle Management</div>
+          <p class="feature-desc">Full control from issuance to redemption, including collateral monitoring and orderly decommissioning.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">4</div>
+        <div class="feature-text">
+          <div class="feature-title">High Throughput &amp; Scalability</div>
+          <p class="feature-desc">Layer-2 infrastructure processes 10,000+ TPS, with auto-scaling for peak demand.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">5</div>
+        <div class="feature-text">
+          <div class="feature-title">Cloud-Native Agility</div>
+          <p class="feature-desc">Modular deployment on AWS/Huawei Cloud/GCP/Azure, with DevOps-ready CI/CD pipelines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARCHITECTURE ===== -->
+  <section class="section-architecture">
+    <h2 class="section-title">Architecture</h2>
+    <div class="arch-container">
+      <!-- Row 1: Stablecoin Layer -->
+      <div class="arch-row-wrap">
+        <div class="arch-row-label">Stablecoin<br>Layer</div>
+        <div class="arch-row-cards">
+          <div class="arch-card">Tokenization/<br>Smart Contract</div>
+          <div class="arch-card">Collateral<br>Management</div>
+          <div class="arch-card">Management<br>Portal</div>
+          <div class="arch-card">User Wallet</div>
+          <div class="arch-card">Regulation<br>Report</div>
+        </div>
+      </div>
+      <!-- Row 2: Core Services Layer -->
+      <div class="arch-row-wrap">
+        <div class="arch-row-label">Core Services<br>Layer</div>
+        <div class="arch-row-cards">
+          <div class="arch-card">Multi-sig Wallet</div>
+          <div class="arch-card">Oracle</div>
+          <div class="arch-card">Layer 2</div>
+          <div class="arch-card">Account Abstraction</div>
+          <div class="arch-card">Remote Signing Solution</div>
+          <div class="arch-card">Key Management</div>
+          <div class="arch-card">Custody Service</div>
+          <div class="arch-card">KYC/AML Solution</div>
+          <div class="arch-card">Dev Portal</div>
+          <div class="arch-card">Node Monitoring</div>
+        </div>
+      </div>
+      <!-- Row 3: Regulation support Layer -->
+      <div class="arch-row-wrap">
+        <div class="arch-row-label">Regulation<br>Support<br>Layer</div>
+        <div class="arch-row-cards">
+          <div class="arch-card">Built-in<br>KYC/KYB</div>
+          <div class="arch-card">Blacklist/<br>Whitelist</div>
+          <div class="arch-card">Pro-Regulation<br>Governance</div>
+          <div class="arch-card">Privacy<br>Protection</div>
+          <div class="arch-card">Gas-Waiving</div>
+        </div>
+      </div>
+      <!-- Row 4: Chain Layer -->
+      <div class="arch-row-wrap">
+        <div class="arch-row-label">Chain Layer</div>
+        <div class="arch-row-cards">
+          <div class="arch-card">Smart Contract<br>Execution</div>
+          <div class="arch-card">Consensus</div>
+          <div class="arch-card">Tokenization</div>
+          <div class="arch-card">Gas<br>Management</div>
+          <div class="arch-card">P2P Network</div>
+          <div class="arch-card">Cross-Chain<br>Support</div>
+        </div>
+      </div>
+      <!-- Row 5: Infrastructure support Layer -->
+      <div class="arch-row-wrap">
+        <div class="arch-row-label">Infrastructure<br>Support<br>Layer</div>
+        <div class="arch-row-cards">
+          <div class="arch-card">Cloud Support</div>
+          <div class="arch-card">On-Prem Support</div>
+          <div class="arch-card">Containerization</div>
+          <div class="arch-card">Auto Scaling</div>
+          <div class="arch-card">CI/CD Pipeline</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIFECYCLE MANAGEMENT ===== -->
+  <section class="section-lifecycle">
+    <div style="text-align:center; margin-bottom:10px;">
+      <span class="section-title" style="display:inline-block; margin-bottom:10px;">Life-Cycle Management</span>
+    </div>
+    <p class="lifecycle-subtitle">Four-Phase Operational Excellence</p>
+
+    <div class="lifecycle-grid">
+      <!-- Phase 1 -->
+      <div class="lifecycle-card">
+        <div class="lifecycle-icon">
+          <img src="https://www.figma.com/api/mcp/asset/279f99af-5af5-4730-a2e7-598f38e1ffae" alt="Design and Issuance" />
+        </div>
+        <div class="lifecycle-phase">Design &amp; Issuance</div>
+        <p class="lifecycle-desc">Dynamic collateral pools (fiat/crypto/commodities) and automated smart contract deployment</p>
+      </div>
+      <!-- Phase 2 -->
+      <div class="lifecycle-card">
+        <div class="lifecycle-icon">
+          <img src="https://www.figma.com/api/mcp/asset/385fdb14-41ab-42f7-bc58-0aa72df93ba4" alt="Operations and Risk" />
+        </div>
+        <div class="lifecycle-phase">Operations &amp; Risk Mitigation</div>
+        <p class="lifecycle-desc">Real-time devaluation alerts and compliance enforcement</p>
+      </div>
+      <!-- Phase 3 -->
+      <div class="lifecycle-card">
+        <div class="lifecycle-icon">
+          <img src="https://www.figma.com/api/mcp/asset/148220a3-3b5d-4dab-b80a-2e9316e5a997" alt="Redemption and Burn" />
+        </div>
+        <div class="lifecycle-phase">Redemption &amp; Burn</div>
+        <p class="lifecycle-desc">Instant user redemption with automated supply adjustments</p>
+      </div>
+      <!-- Phase 4 -->
+      <div class="lifecycle-card">
+        <div class="lifecycle-icon">
+          <img src="https://www.figma.com/api/mcp/asset/19e3c84e-bcf6-46c9-afcf-f7dc1f50e225" alt="Decommissioning" />
+        </div>
+        <div class="lifecycle-phase">Decommissioning</div>
+        <p class="lifecycle-desc">Regulatory-guided shutdown protocols and fund repatriation</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== USE CASES ===== -->
+  <section class="section-usecases">
+    <h2 class="section-title-teal">Use Cases</h2>
+    <div class="usecases-grid">
+      <div class="usecase-card">
+        <div class="usecase-icon">
+          <img src="https://www.figma.com/api/mcp/asset/02168f2f-6e87-417d-b2b6-e62f91308abf" alt="Remittances" />
+        </div>
+        <div class="usecase-title">Cross-Border Remittances</div>
+        <p class="usecase-desc">Reduce fees by 80% for emerging markets.</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">
+          <img src="https://www.figma.com/api/mcp/asset/d9ff781a-0b83-420c-b595-a94f659e8492" alt="Treasury" />
+        </div>
+        <div class="usecase-title">Institutional Treasury Management</div>
+        <p class="usecase-desc">Hedge crypto volatility via algorithmic rebalancing.</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">
+          <img src="https://www.figma.com/api/mcp/asset/a00596de-b41b-41e1-8310-289a6d5e5d70" alt="Supply Chain" />
+        </div>
+        <div class="usecase-title">Supply Chain Payments</div>
+        <p class="usecase-desc">Automate B2B settlements with smart contract triggers.</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">
+          <img src="https://www.figma.com/api/mcp/asset/6f5f8f30-66ee-406c-8a69-6cc364478482" alt="Government" />
+        </div>
+        <div class="usecase-title">Government Disbursements</div>
+        <p class="usecase-desc">Transparent public sector payments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPLIANCE & SECURITY ===== -->
+  <section class="section-compliance">
+    <h2 class="section-title">Compliance &amp; Security</h2>
+
+    <div class="compliance-item">
+      <div class="compliance-image">
+        <img src="https://www.figma.com/api/mcp/asset/ac68242f-3a43-4760-b5e3-95bef49a2c32" alt="Jurisdictional Alignment" />
+      </div>
+      <div class="compliance-text">
+        <div class="compliance-title">Jurisdictional Alignment</div>
+        <p class="compliance-desc">Adapts to HKMA, MAS, and EU MiCA reserve requirements</p>
+      </div>
+    </div>
+
+    <div class="compliance-item reverse">
+      <div class="compliance-image">
+        <img src="https://www.figma.com/api/mcp/asset/0815b593-b423-4371-870d-77cee7d1044c" alt="Privacy by Design" />
+      </div>
+      <div class="compliance-text">
+        <div class="compliance-title">Privacy by Design</div>
+        <p class="compliance-desc">Zero-knowledge proofs (ZKPs) for confidential transactions; regulator "master keys" for audits</p>
+      </div>
+    </div>
+
+    <div class="compliance-item">
+      <div class="compliance-image">
+        <img src="https://www.figma.com/api/mcp/asset/12cb9fae-ab52-49ac-b55d-d33f0b0bbbb1" alt="Collateral Safeguards" />
+      </div>
+      <div class="compliance-text">
+        <div class="compliance-title">Collateral Safeguards</div>
+        <p class="compliance-desc">Real-time attestations to ensure 100% collateralization</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY KTECH ===== -->
+  <section class="section-why">
+    <div class="why-glow">
+      <div class="why-glow-blob1"></div>
+      <div class="why-glow-blob2"></div>
+      <div class="why-glow-blob3"></div>
+    </div>
+    <div class="why-inner">
+      <h2 class="why-title">Why KTECH?</h2>
+      <div class="why-grid">
+        <div>
+          <div class="why-item-title">Regulator-Validated Technology</div>
+          <p class="why-item-desc">Built for compliance from day one, with solutions validated through sovereign engagement.</p>
+        </div>
+        <div>
+          <div class="why-item-title">Flexible Modular Architecture</div>
+          <p class="why-item-desc">Highly engineered modular design enabling client-specific customization.</p>
+        </div>
+        <div>
+          <div class="why-item-title">Battle-Tested Blockchain Innovation</div>
+          <p class="why-item-desc">Combines cutting-edge technologies (ZK privacy, 10,000 TPS L2, etc.) with real-world validation.</p>
+        </div>
+        <div>
+          <div class="why-item-title">Mature Accelerator Platform</div>
+          <p class="why-item-desc">Launch enterprise solutions 6-9 months faster with pre-integrated modules for issuance, compliance, and settlement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="section-cta">
+    <div class="cta-card">
+      <div class="cta-glow-left"></div>
+      <div class="cta-glow-right"></div>
+      <h2 class="cta-title">Turnkey, Regulator-Ready Stablecoin Platform</h2>
+      <button class="btn-demo">
+        Request a demo
+        <span class="arrow-icon"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-divider"></div>
+    <div class="footer-notice">
+      <div class="notice-icon">
+        <img src="https://www.figma.com/api/mcp/asset/76caf437-08bc-4804-a560-aeecddeb453e" alt="info" />
+      </div>
+      <div>
+        <div class="notice-title">Notice:</div>
+        <p class="notice-text">This service is designed solely for international clients and adheres to applicable domestic and international regulatory standards, offering compliant solutions for financial institutions. This information does not constitute a commitment to conduct business within mainland China. Any implementation is contingent upon obtaining the necessary approvals and qualifications in accordance with the laws and regulations of China and relevant jurisdictions.</p>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
